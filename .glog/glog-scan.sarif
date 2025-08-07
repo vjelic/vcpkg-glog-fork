@@ -1,0 +1,109 @@
+{
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Glog.AI",
+          "organization": "Glog.AI",
+          "fullName": "Glog, Making software more secure",
+          "version": "1.0.0",
+          "semanticVersion": "1.0.0",
+          "informationUri": "https://www.glog.ai",
+          "rules": [
+            {
+              "id": "glog-c68f9305-9ab2-45ab-8977-a7b69496e08d",
+              "help": {
+                "text": "",
+                "markdown": "The \"Unsecured URL Vulnerability\" in C++ programming language refers to the potential risk of exposing sensitive information through the use of unsecured URLs. This vulnerability can be exploited by attackers to intercept the data being transmitted over the network. It is particularly dangerous when dealing with sensitive data such as login credentials, personal information, or credit card details.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to use secure communication protocols such as HTTPS instead of HTTP. HTTPS encrypts the data being transmitted, making it difficult for attackers to intercept and read the information. Additionally, validate all URLs and inputs from users to prevent potential attacks such as URL manipulation or injection attacks.\n\n## Source Code Fix Recommendation\n\nIf you are using a library like libcurl to make HTTP requests, you can switch to HTTPS by simply changing the URL from `http://` to `https://`. Here is an example:\n\n```cpp\n#include <curl/curl.h>\n\nint main(void)\n{\n  CURL *curl;\n  CURLcode res;\n\n  curl_global_init(CURL_GLOBAL_DEFAULT);\n\n  curl = curl_easy_init();\n  if(curl) {\n    curl_easy_setopt(curl, CURLOPT_URL, \"https://github.com\");\n\n    /* Perform the request, res will get the return code */\n    res = curl_easy_perform(curl);\n    /* Check for errors */\n    if(res != CURLE_OK)\n      fprintf(stderr, \"curl_easy_perform() failed: %s\\n\",\n              curl_easy_strerror(res));\n\n    /* always cleanup */\n    curl_easy_cleanup(curl);\n  }\n\n  curl_global_cleanup();\n\n  return 0;\n}\n```\n\n## Library Dependencies\n\nThe above code example requires the libcurl library.\n\n## OWASP Resources\n\n- [Unvalidated Redirects and Forwards Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html)\n- [Transport Layer Protection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html)\n\n## Common Weakness Enumeration (CWE)\n\n- [CWE-319: Cleartext Transmission of Sensitive Information](https://cwe.mitre.org/data/definitions/319.html)\n- [CWE-601: URL Redirection to Untrusted Site ('Open Redirect')](https://cwe.mitre.org/data/definitions/601.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS137138"
+                ]
+              }
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "glog-c68f9305-9ab2-45ab-8977-a7b69496e08d",
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Unsecured URL Vulnerability"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "ports/libffi/fficonfig.h"
+                },
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 27,
+                  "endLine": 26,
+                  "endColumn": 44,
+                  "charOffset": 557,
+                  "charLength": 17,
+                  "snippet": {
+                    "text": "http://github.com",
+                    "rendered": {
+                      "text": "http://github.com",
+                      "markdown": "`http://github.com`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "An HTTP-based URL without TLS was detected."
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "ports/libffi/fficonfig.h"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 557,
+                        "charLength": 17
+                      },
+                      "insertedContent": {
+                        "text": "https://github.com"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "Moderate",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "ThreatModel.Integration.HTTP"
+            ]
+          }
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
